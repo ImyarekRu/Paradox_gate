@@ -36,7 +36,7 @@ function th_SanitizePosts(post){
 	var posts=[JSON.parse(post)];
 	//console.log("before sanitizing",posts[0]);
 	for(var i in posts){
-		posts[i].hashname="qweqweqwe";
+		//posts[i].hashname="qweqweqwe";
 		tmpstr=sanitizer.sanitize(posts[i].txt);
 		posts[i].src=sanitizer.escape(tmpstr.replace(/\n/g,"\\n"));
 		posts[i].txt=marked(tmpstr,{renderer:th_renderer}).replace(/[\n\r]/g,"<br>").replace(/id\=\".*?\"/g,"");
@@ -85,14 +85,14 @@ var tempserver = http.createServer(function (req, res1) {
 	var peerreq=req.url.toString().substr(req.url.toString().indexOf("?")+1);
 	gth.thtp.request("thtp://"+peerreq,function(err,res){
 		if(err)
-			res1.end("error");
+			res1.end("<h4>Или произошла какая-то ошибка, или пир в данный момент не в сети. Попробуйте позже.</h4>");
 		else
 		{
 			var buf="";
 			res.on('readable', function() {
 				var chunk;
 				while (null !== (chunk = res.read())) {
-					console.log('got %d bytes of data', chunk.length);
+					//console.log('got %d bytes of data', chunk.length);
 					buf+=chunk;
 				}
 				console.log(buf);
@@ -107,8 +107,8 @@ tempserver.listen(56765);
 //th.debug(console.log);
 gth=null;
 th.init({id:path.resolve("client.json"),seeds:path.resolve("seeds.json")},function(err,self){
-  if(err) return console.log(err);
+  if(err) process.exit(0);//return console.log(err);
   require("./index.js").install(self);
   gth=self;
-  console.log("telehash ready "+self.hashname);
+  //console.log("telehash ready "+self.hashname);
 });
