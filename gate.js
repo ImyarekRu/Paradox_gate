@@ -85,7 +85,7 @@ var tempserver = http.createServer(function (req, res1) {
 	var peerreq=req.url.toString().substr(req.url.toString().indexOf("?")+1);
 	gth.thtp.request("thtp://"+peerreq,function(err,res){
 		if(err)
-		res.end("error");
+			res1.end("error");
 		else
 		{
 			var buf="";
